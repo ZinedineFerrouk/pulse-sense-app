@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 import Home from "./app/screens/Home";
-import Login from "./app/screens/Login";
+import Welcome from "./app/screens/Welcome";
 import { useAuth, AuthProvider } from "./app/context/AuthContext";
 
 const Stack = createNativeStackNavigator();
@@ -24,7 +24,7 @@ export const Layout = () => {
         {authState.authenticated ? (
           <Stack.Screen name="Home" component={Home}></Stack.Screen>
         ) : (
-          <Stack.Screen name="Login" component={Login}></Stack.Screen>
+          <Stack.Screen name="Welcome" component={Welcome}></Stack.Screen>
         )}
       </Stack.Navigator>
     </NavigationContainer>

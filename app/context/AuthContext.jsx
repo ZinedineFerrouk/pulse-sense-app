@@ -2,15 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
 import * as SecureStore from "expo-secure-store";
 
-interface AuthProps {
-  authState: {
-    token: string,
-    authenticated: boolean,
-  };
-  onLogin: (email, password) => Promise;
-}
-
-export const API_URL = "https://api.developbetterapps.com";
+export const API_URL = "http://10.0.2.2:8000/api/v1";
 const AuthContext = createContext({});
 
 export const useAuth = () => {
@@ -30,10 +22,11 @@ export const AuthProvider = ({ children }) => {
 
       if (token) {
         axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-        setAuthState({
-          token: response.data.token,
+        setAuthState((prevState) => ({
+          ...prevState,
+          token: token,
           authenticated: true,
-        });
+        }));
       }
     };
 
@@ -42,29 +35,25 @@ export const AuthProvider = ({ children }) => {
   // Login
   const login = async (email, password) => {
     try {
-      const response = await axios.post(`${API_URL}/auth`, { email, password });
-
+      const response = await axios.post(`${API_URL}/auth/authorize`, {
+        username: email,
+        password: password
+      });
+      
       setAuthState({
-        token: response.data.token,
+        token: response.data?.token,
         authenticated: true,
       });
 
-      axios.defaults.headers.common[
-        "Authorization"
-      ] = `Bearer ${response.data.token}`;
+      axios.defaults.headers.common["Authorization"] = `Bearer ${response.data.token}`;
 
       await SecureStore.setItemAsync("TOKEN_KEY", response.data.token);
 
       return response;
     } catch (error) {
-      return { error: true, msg: error.response.data.msg };
+      return { error: true, msg: "An error has occured while getting the Token." };
     }
   };
 
-  const value = {
-    onLogin: login,
-    authState,
-  };
-
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{login, authState}}>{children}</AuthContext.Provider>;
 };
