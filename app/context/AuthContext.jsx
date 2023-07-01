@@ -55,5 +55,13 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const register = async () => {
+    // TO DO
+  }
+
+  const logout = () => {
+    // TO DO
+  }
+
   return <AuthContext.Provider value={{login, authState}}>{children}</AuthContext.Provider>;
 };
