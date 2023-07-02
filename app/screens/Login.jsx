@@ -9,9 +9,9 @@ const Login = () => {
 
   const handleLogin = async () => {
     const result = await login(email, password);
-    console.log('result', result)
+    console.log('Result', result.data)
     if (result && result.error) {
-      console.log(result.msg)
+      // console.log(result.msg)
     }
   }
 

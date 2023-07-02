@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
 import * as SecureStore from "expo-secure-store";
 
-export const API_URL = "http://10.0.2.2:8000/api/v1";
+export const API_URL = "http://192.168.0.35:8000/api/v1";
 const AuthContext = createContext({});
 
 export const useAuth = () => {
@@ -12,7 +12,7 @@ export const useAuth = () => {
 export const AuthProvider = ({ children }) => {
   const [authState, setAuthState] = useState({
     token: null,
-    authenticated: null,
+    authenticated: false,
   });
 
   useEffect(() => {
@@ -21,7 +21,7 @@ export const AuthProvider = ({ children }) => {
       console.log("Token:", token);
 
       if (token) {
-        axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+        axios.defaults.headers.common["Authorization"] = `Bearer ${token}`; 
         setAuthState((prevState) => ({
           ...prevState,
           token: token,
@@ -32,6 +32,8 @@ export const AuthProvider = ({ children }) => {
 
     loadToken();
   }, []);
+
+
   // Login
   const login = async (email, password) => {
     try {
@@ -51,9 +53,19 @@ export const AuthProvider = ({ children }) => {
 
       return response;
     } catch (error) {
-      return { error: true, msg: "An error has occured while getting the Token." };
+      return { error: true, msg: error };
     }
   };
 
-  return <AuthContext.Provider value={{login, authState}}>{children}</AuthContext.Provider>;
+  const logout = async () => {
+    await SecureStore.deleteItemAsync("TOKEN_KEY");
+    axios.defaults.headers.common["Authorization"] = '';
+
+    setAuthState({
+      token: null,
+      authenticated: false,
+    })
+  }
+
+  return <AuthContext.Provider value={{ login, logout, authState }}>{children}</AuthContext.Provider>;
 };
