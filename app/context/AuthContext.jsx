@@ -33,6 +33,9 @@ export const AuthProvider = ({ children }) => {
     loadToken();
   }, []);
 
+  const register = async () => {
+    console.log('TO-DO: Implement registration');
+  } 
 
   // Login
   const login = async (email, password) => {
@@ -67,5 +70,5 @@ export const AuthProvider = ({ children }) => {
     })
   }
 
-  return <AuthContext.Provider value={{ login, logout, authState }}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ login, logout, register, authState }}>{children}</AuthContext.Provider>;
 };

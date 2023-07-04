@@ -1,6 +1,15 @@
 import React, { useState } from "react";
-import { View, Text, Image, TextInput, Pressable, Button, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  SafeAreaView,
+} from "react-native";
 import { useAuth } from "../context/AuthContext";
+import { AntDesign } from "@expo/vector-icons";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -9,30 +18,28 @@ const Login = () => {
 
   const handleLogin = async () => {
     const result = await login(email, password);
-    console.log('Result', result.data)
+    console.log("Result", result.data);
     if (result && result.error) {
       // console.log(result.msg)
     }
-  }
+  };
 
   return (
-    <View className="flex h-screen items-center justify-center bg-neutral-1000">
-      <View>
-        {/* <Image
+    <SafeAreaView className="h-screen flex justify-center items-center bg-mauve-100">
+      <View className="">
+        <Image
           style={styles.image}
-          source={require("../../assets/pulse-sense-logo.png")}
-        /> */}
+          source={require("../../assets/images/pulse-sense-logo.png")}
+        />
       </View>
 
       <View className="p-8 w-full">
-        <Text className="text-3xl font-bold mb-6 text-sky-1000">
-          Bienvenue !
-        </Text>
+        <Text className="text-3xl text-left font-bold mb-6">Bienvenue !</Text>
 
         <TextInput
           onChangeText={setEmail}
           value={email}
-          className="w-full bg-white border border-sky-1000 rounded-md h-12 px-4 mb-4"
+          className="w-full bg-white border  border-sky-1000 rounded-md h-12 px-6 mb-4"
           placeholderTextColor="#110B6E"
           textContentType="emailAddress"
           placeholder="Enter email address"
@@ -41,22 +48,70 @@ const Login = () => {
         <TextInput
           onChangeText={setPassword}
           value={password}
-          className="w-full bg-white border border-sky-1000 rounded-md h-12 px-4"
+          className="w-full bg-white border border-sky-1000 rounded-md h-12 px-6 mb-4"
           placeholderTextColor="#110B6E"
           textContentType="password"
           secureTextEntry
           placeholder="Votre mot de passe"
         />
 
-        
-
         {/* <View className="flex flex-row justify-between items-center my-8">
           <Button title="Réinitialiser le mot de passe" onPress={login}></Button>
         </View> */}
 
-        <Button title="Se connecter" onPress={handleLogin}></Button>
+        <View className="items-center">
+          <TouchableOpacity
+            className="border-sky-1000 bg-sky-1000 rounded-md flex flex-row justify-between items-center w-9/12 py-4 px-4 my-6"
+            onPress={handleLogin}
+          >
+            <Text className="font-bold text-neutral-1200">Me connecter</Text>
+            <AntDesign
+              name="login"
+              style={{ marginLeft: 15 }}
+              size={24}
+              color="#F9F9FA"
+            />
+          </TouchableOpacity>
+        </View>
+
+        <View className=""></View>
+
+        <View className="flex items-center">
+          <Text className="font-bold">
+            Ou connecter vous avec
+          </Text>
+
+          <View className="flex flex-row mt-3">
+            <TouchableOpacity className="bg-neutral-1200 rounded-md p-1 mx-3">
+              <AntDesign
+                name="google"
+                style={{ margin: 'auto' }}
+                size={24}
+                color="#110B6E"
+              />
+            </TouchableOpacity>
+
+            <TouchableOpacity className="bg-neutral-1200 rounded-md p-1 mx-3">
+              <AntDesign
+              name="facebook-square"                
+              style={{ margin: 'auto' }}
+              size={24}
+              color="#110B6E"
+            />
+            </TouchableOpacity>
+
+            <TouchableOpacity className="bg-neutral-1200 rounded-md p-1 mx-3">
+              <AntDesign
+              name="apple1"
+              style={{ margin: 'auto' }}
+              size={24}
+              color="#110B6E"
+            />
+            </TouchableOpacity>
+          </View>
+        </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
