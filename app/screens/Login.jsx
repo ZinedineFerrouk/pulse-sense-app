@@ -55,10 +55,6 @@ const Login = () => {
           placeholder="Votre mot de passe"
         />
 
-        {/* <View className="flex flex-row justify-between items-center my-8">
-          <Button title="Réinitialiser le mot de passe" onPress={login}></Button>
-        </View> */}
-
         <View className="items-center">
           <TouchableOpacity
             className="border-sky-1000 bg-sky-1000 rounded-md flex flex-row justify-between items-center w-9/12 py-4 px-4 my-6"
@@ -77,15 +73,13 @@ const Login = () => {
         <View className=""></View>
 
         <View className="flex items-center">
-          <Text className="font-bold">
-            Ou connecter vous avec
-          </Text>
+          <Text className="font-bold">Ou connecter vous avec</Text>
 
           <View className="flex flex-row mt-3">
             <TouchableOpacity className="bg-neutral-1200 rounded-md p-1 mx-3">
               <AntDesign
                 name="google"
-                style={{ margin: 'auto' }}
+                style={{ margin: "auto" }}
                 size={24}
                 color="#110B6E"
               />
@@ -93,20 +87,20 @@ const Login = () => {
 
             <TouchableOpacity className="bg-neutral-1200 rounded-md p-1 mx-3">
               <AntDesign
-              name="facebook-square"                
-              style={{ margin: 'auto' }}
-              size={24}
-              color="#110B6E"
-            />
+                name="facebook-square"
+                style={{ margin: "auto" }}
+                size={24}
+                color="#110B6E"
+              />
             </TouchableOpacity>
 
             <TouchableOpacity className="bg-neutral-1200 rounded-md p-1 mx-3">
               <AntDesign
-              name="apple1"
-              style={{ margin: 'auto' }}
-              size={24}
-              color="#110B6E"
-            />
+                name="apple1"
+                style={{ margin: "auto" }}
+                size={24}
+                color="#110B6E"
+              />
             </TouchableOpacity>
           </View>
         </View>

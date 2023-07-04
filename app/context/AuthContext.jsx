@@ -21,6 +21,7 @@ export const AuthProvider = ({ children }) => {
       console.log("Token:", token);
 
       if (token) {
+        loadCurrentUser
         axios.defaults.headers.common["Authorization"] = `Bearer ${token}`; 
         setAuthState((prevState) => ({
           ...prevState,
@@ -70,5 +71,16 @@ export const AuthProvider = ({ children }) => {
     })
   }
 
+
+  const loadCurrentUser = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/user/get-current-user`);
+      console.log(response);
+
+      return response;
+    } catch (error) {
+      return { error: true, msg: error };
+    }
+  }
   return <AuthContext.Provider value={{ login, logout, register, authState }}>{children}</AuthContext.Provider>;
 };
