@@ -10,6 +10,7 @@ const Home = () => {
             Bienvenue sur votre espace personnel
           </Text>
           
+          {/* Retrieve data from API here */}
         </View>
       </SafeAreaView>
   );

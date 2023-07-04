@@ -14,6 +14,8 @@ const NavigationTabBar = () => {
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
+        tabBarStyle:{ backgroundColor: "#F9F9FA", flexDirection: "row"},
+        tabBarActiveTintColor: '#110B6E',
       }}
     >
       <Tab.Screen

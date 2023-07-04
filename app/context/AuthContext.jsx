@@ -1,8 +1,8 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
 import * as SecureStore from "expo-secure-store";
+import { API_URL } from "@env";
 
-export const API_URL = "http://192.168.0.35:8000/api/v1";
 const AuthContext = createContext({});
 
 export const useAuth = () => {
@@ -70,7 +70,6 @@ export const AuthProvider = ({ children }) => {
       authenticated: false,
     })
   }
-
 
   const loadCurrentUser = async () => {
     try {

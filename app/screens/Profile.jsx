@@ -9,7 +9,6 @@ const Profile = () => {
     <SafeAreaView className="h-screen flex justify-center items-center bg-mauve-100">
       <View>
         <Text>Profile Page</Text>
-        <Button onPress={logout} title="Se déconnecter" />
       </View>
     </SafeAreaView>
   );
