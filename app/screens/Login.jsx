@@ -12,13 +12,12 @@ import { useAuth } from "../context/AuthContext";
 import { AntDesign } from "@expo/vector-icons";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("admin@example.com");
+  const [password, setPassword] = useState("test123");
   const { login } = useAuth();
 
   const handleLogin = async () => {
     const result = await login(email, password);
-    console.log("Result", result.data);
     if (result && result.error) {
       // console.log(result.msg)
     }
@@ -35,7 +34,9 @@ const Login = () => {
 
       <View className="p-8 w-full">
         <Text className="text-3xl text-left font-bold mb-6">Bienvenue !</Text>
-
+        {/* {
+          result && result.error ? <Text className="text-lg text-left text-red-700 font-bold my-2">{ result.error.msg }</Text> : ''
+        } */}
         <TextInput
           onChangeText={setEmail}
           value={email}
