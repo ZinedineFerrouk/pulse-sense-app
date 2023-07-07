@@ -2,8 +2,13 @@ import React, { useState } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { IconButton } from "react-native-paper";
 
-const FilterTab = () => {
+const FilterTab = ({ setFilter }) => {
   const [status, setStatus] = useState("Tout");
+
+  const setStatusFilter = (status) => {
+    setStatus(status);
+    setFilter(status);
+  };
 
   const listTab = [
     {
@@ -27,6 +32,7 @@ const FilterTab = () => {
       iconName: "blood-bag",
     },
   ];
+
   return (
     <View className="flex flex-row justify-around items-center border-l-neutral-1200 rounded-md bg-neutral-1000 p-2">
       {listTab.map((item) => (

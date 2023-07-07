@@ -12,8 +12,8 @@ import { useAuth } from "../context/AuthContext";
 import { AntDesign } from "@expo/vector-icons";
 
 const Login = () => {
-  const [email, setEmail] = useState("admin@example.com");
-  const [password, setPassword] = useState("test123");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const { login } = useAuth();
 
   const handleLogin = async () => {
