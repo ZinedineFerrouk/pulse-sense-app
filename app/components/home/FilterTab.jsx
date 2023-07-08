@@ -5,9 +5,9 @@ import { IconButton } from "react-native-paper";
 const FilterTab = ({ setFilter }) => {
   const [status, setStatus] = useState("Tout");
 
-  const setStatusFilter = (status) => {
-    setStatus(status);
+  const handleFilterClick = (status) => {
     setFilter(status);
+    setStatus(status);
   };
 
   const listTab = [
@@ -34,15 +34,21 @@ const FilterTab = ({ setFilter }) => {
   ];
 
   return (
-    <View className="flex flex-row justify-around items-center border-l-neutral-1200 rounded-md bg-neutral-1000 p-2">
+    <View className="flex flex-row justify-around items-center border-l-neutral-1200 rounded-md bg-neutral-1000">
       {listTab.map((item) => (
         <TouchableOpacity
           key={item.key}
-          onPress={() => setStatusFilter(item.status)}
-          className="flex flex-col justify-around items-center my-1"
+          onPress={() => handleFilterClick(item.status)}
+          className={`flex flex-col justify-around items-center p-2 ${
+            status === item.status ? "bg-indigo-400" : ""
+          }`}
         >
-          <IconButton icon={item.iconName} size={32} />
-          <Text className="p-0 m-0">{item.status}</Text>
+          <IconButton
+            icon={item.iconName}
+            size={32}
+            iconColor={status === item.status ? "#fff" : "#000"}
+          />
+          <Text style={{ color: status === item.status ? "#fff" : "#000" }}>{item.status}</Text>
         </TouchableOpacity>
       ))}
     </View>

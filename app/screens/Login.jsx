@@ -10,8 +10,10 @@ import {
 } from "react-native";
 import { useAuth } from "../context/AuthContext";
 import { AntDesign } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 
 const Login = () => {
+  const navigation = useNavigation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { login } = useAuth();
@@ -104,6 +106,13 @@ const Login = () => {
               />
             </TouchableOpacity>
           </View>
+        </View>
+
+        <View>
+          <Text>Vous n'avez pas encore de compte ? </Text>
+          <TouchableOpacity onPress={() => navigation.navigate("Register")}>
+            <Text className="text-sky-1000 font-bold">Créer-en un ici</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </SafeAreaView>

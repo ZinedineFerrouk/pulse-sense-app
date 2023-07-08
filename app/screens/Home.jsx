@@ -1,129 +1,97 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, SafeAreaView, ScrollView } from "react-native";
+import { SafeAreaView, ScrollView, View } from "react-native";
 import { useAuth } from "../context/AuthContext";
-import { API_URL } from "@env";
-import { Avatar, Card, IconButton } from "react-native-paper";
-import FilterTab from "../components/FilterTab";
+import { getStatsByUser } from "../services/api";
 import Loader from "../components/Loader";
+import HomeHeader from "../components/home/HomeHeader";
+import FilterTab from "../components/home/FilterTab";
+import StatsCard from "../components/home/StatsCard";
+import EmptyData from "../components/home/EmptyData";
+import Pagination from "../components/home/Pagination";
 
 const Home = () => {
   const { user, isLoading, setIsLoading, authState } = useAuth();
-
   const [userStats, setUserStats] = useState([]);
   const [filter, setFilter] = useState("Tout");
-  const [freqData, setFreqData] = useState([]);
-  const [tempData, setTempData] = useState([]);
-  const [oxyData, setOxyData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [perPage] = useState(6);
 
   useEffect(() => {
     getStatsFromUser();
   }, [user]);
 
   const getStatsFromUser = async () => {
-    if (user.id != null) {
+    if (user.id) {
       setIsLoading(true);
-      var myHeaders = new Headers();
-      myHeaders.append("Authorization", "Bearer " + authState.token);
-
-      var requestOptions = {
-        method: "GET",
-        headers: myHeaders,
-        redirect: "follow",
-      };
-
-      fetch(`${API_URL}/admin/get-stats-by-user/` + user.id, requestOptions)
-        .then((response) => response.json())
-        .then((result) => {
-          const freqStats = result.filter(
-            (stat) => stat.measurementTypeUnit === "bpm"
-          );
-          const tempStats = result.filter(
-            (stat) => stat.measurementTypeUnit === "degree"
-          );
-          const oxyStats = result.filter(
-            (stat) => stat.measurementTypeUnit === "percent"
-          );
-
-          setFreqData(freqStats);
-          setTempData(tempStats);
-          setOxyData(oxyStats);
-          setUserStats(result);
-          setIsLoading(false);
-        })
-        .catch((error) => {
-          console.log("error", error);
-          setIsLoading(false);
-        });
+      try {
+        const result = await getStatsByUser(user.id, authState.token);
+        setUserStats(result);
+        setIsLoading(false);
+      } catch (error) {
+        console.log("error", error);
+        setIsLoading(false);
+      }
     }
   };
+
+  const handleFilterChange = (status) => {
+    setFilter(status);
+    setCurrentPage(1); // Reset current page when filter changes
+  };
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const filteredStats = userStats.filter((item) => {
+    if (filter === "Fréq." && item.measurementTypeUnit === "bpm") {
+      return true;
+    }
+    if (filter === "Temp." && item.measurementTypeUnit === "degree") {
+      return true;
+    }
+    if (filter === "Oxy." && item.measurementTypeUnit === "percent") {
+      return true;
+    }
+    return filter === "Tout";
+  });
+
+  const indexOfLastMeasure = currentPage * perPage;
+  const indexOfFirstMeasure = indexOfLastMeasure - perPage;
+  const currentMeasures = filteredStats.slice(
+    indexOfFirstMeasure,
+    indexOfLastMeasure
+  );
+
+  const totalPages = Math.ceil(filteredStats.length / perPage);
 
   if (isLoading) {
     return <Loader />;
   }
 
-  let filteredStats = [];
-  if (filter === "Fréq.") {
-    filteredStats = freqData;
-  } else if (filter === "Temp.") {
-    filteredStats = tempData;
-  } else if (filter === "Oxy.") {
-    filteredStats = oxyData;
-  } else {
-    filteredStats = userStats;
-  }
-
   return (
     <SafeAreaView className="h-screen flex justify-center items-center bg-mauve-100">
-      <ScrollView>
-        <View>
-          <Text className="text-2xl text-left font-bold my-6 mx-4">
-            {user
-              ? `Bonjour ${user.firstname}, bienvenue sur votre espace personnel`
-              : "Bienvenue sur votre espace personnel"}
-          </Text>
+      <ScrollView className="mt-5 mb-12">
+        <HomeHeader user={user} />
+        <FilterTab setFilter={handleFilterChange} />
 
-          <FilterTab setFilter={setFilter} />
+        <View className="py-8">
+          {currentMeasures.length === 0 ? (
+            <EmptyData />
+          ) : (
+            currentMeasures.map((item) => (
+              <StatsCard key={item.id} item={item} />
+            ))
+          )}
         </View>
 
-        <View className="w-full flex justify-center items-center mx-auto my-4 pb-20 px-2">
-          {filteredStats.length > 0 ? (
-            filteredStats.map((item) => (
-              <Card key={item.id} className="w-full my-3">
-                <Card.Title
-                  key={item.id}
-                  title={item.measurementType}
-                  subtitle={item.createdAt}
-                  left={(props) => {
-                    if (item.measurementTypeUnit === "bpm") {
-                      return <Avatar.Icon {...props} icon="heart-pulse" />;
-                    } else if (item.measurementTypeUnit === "degree") {
-                      return <Avatar.Icon {...props} icon="thermometer" />;
-                    } else if (item.measurementTypeUnit === "percent") {
-                      return <Avatar.Icon {...props} icon="blood-bag" />;
-                    }
-                  }}
-                  right={() => {
-                    if (item.measurementTypeUnit === "bpm")
-                      return (
-                        <Text className="mx-2">{item.stat_value} BPM</Text>
-                      );
-                    else if (item.measurementTypeUnit === "degree")
-                      return <Text className="mx-2">{item.stat_value}°C</Text>;
-                    else if (item.measurementTypeUnit === "percent")
-                      return (
-                        <Text className="mx-2">{item.stat_value} SpO2</Text>
-                      );
-                  }}
-                />
-              </Card>
-            ))
-          ) : (
-            <View className="flex justify-center items-center mt-8">
-              <Text className="text-center text-xl my-4">
-                Aucune donnée à afficher pour le moment...
-              </Text>
-              <IconButton icon="emoticon-sad-outline" size={64} />
-            </View>
+        <View className="mb-20">
+          {filteredStats.length > perPage && (
+            <Pagination
+              totalPages={totalPages}
+              currentPage={currentPage}
+              onPageChange={handlePageChange}
+            />
           )}
         </View>
       </ScrollView>
