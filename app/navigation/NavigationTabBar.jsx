@@ -1,9 +1,9 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-import Home from "../screens/Home";
-import Profile from "../screens/Profile";
-import Parameters from "../screens/Parameters";
+import Home from "../screens/TabScreens/Home";
+import Profile from "../screens/TabScreens/Profile";
+import Parameters from "../screens/TabScreens/Parameters";
 
 import { AntDesign } from "@expo/vector-icons";
 

@@ -4,12 +4,17 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  ScrollView,
   SafeAreaView,
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { userRegister } from "../services/api";
+import { useToast } from "react-native-toast-notifications";
+import { userRegister } from "../../services/apiService";
+import {
+  validateEmail,
+  validateName,
+  validatePassword,
+} from "../../services/registerValidationService";
 
 const Register = () => {
   const navigation = useNavigation();
@@ -18,10 +23,51 @@ const Register = () => {
   const [lastName, setLastName] = useState("");
   const [password, setPassword] = useState("");
 
+  const [error, setError] = useState("");
+  const toast = useToast();
+
   const handleRegister = async () => {
+    if (
+      email === "" ||
+      firstName === "" ||
+      lastName === "" ||
+      password === ""
+    ) {
+      setError("Veuillez remplir tous les champs");
+      return;
+    }
+
+    if (!validateEmail(email)) {
+      setError("Adresse e-mail invalide");
+      return;
+    }
+
+    if (!validateName(firstName)) {
+      setError("Prénom invalide");
+      return;
+    }
+
+    if (!validateName(lastName)) {
+      setError("Nom invalide");
+      return;
+    }
+
+    if (!validatePassword(password)) {
+      setError(
+        "Mot de passe invalide. Il doit contenir au moins 8 caractères, une majuscule et un caractère spécial"
+      );
+      return;
+    }
+
     try {
       await userRegister(email, firstName, lastName, password);
-      // navigation.navigate("Login");
+      navigation.navigate("Login");
+      toast.show("Votre compte a été créé avec succès !", {
+        type: "success",
+        position: "top",
+        duration: 5000,
+        animationType: "slide-in",
+      });
     } catch (error) {
       console.log("Registration error:", error);
       // Gérez l'erreur de la manière appropriée
@@ -99,6 +145,10 @@ const Register = () => {
             onChangeText={setPassword}
             value={password}
           />
+
+          {error !== "" && (
+            <Text className="text-center text-red-700 font-bold">{error}</Text>
+          )}
 
           <View className="items-center">
             <TouchableOpacity

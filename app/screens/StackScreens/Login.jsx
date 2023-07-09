@@ -8,7 +8,7 @@ import {
   StyleSheet,
   SafeAreaView,
 } from "react-native";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
@@ -30,7 +30,7 @@ const Login = () => {
       <View className="">
         <Image
           style={styles.image}
-          source={require("../../assets/images/pulse-sense-logo.png")}
+          source={require("../../../assets/images/pulse-sense-logo.png")}
         />
       </View>
 

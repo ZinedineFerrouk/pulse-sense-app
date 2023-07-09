@@ -9,7 +9,7 @@ import {
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
-import WelcomeSVG from "../../assets/images/welcome-image.svg";
+import WelcomeSVG from "../../../assets/images/welcome-image.svg";
 
 const Welcome = () => {
   const navigation = useNavigation();
@@ -26,9 +26,9 @@ const Welcome = () => {
           Bienvenue sur Pulse Sense
         </Text>
 
-        <View className="items-center">
+        <View className="px-16">
           <TouchableOpacity
-            className="border-sky-1000 bg-sky-1000 rounded-md flex flex-row justify-between items-center w-56 py-4 px-4 my-6"
+            className="border-sky-1000 bg-sky-1000 rounded-md w-64 flex flex-row justify-between items-center py-4 px-4 my-6"
             onPress={() => navigation.navigate("Login")}
           >
             <Text className="font-bold text-neutral-1200">Je me connecte</Text>
@@ -41,9 +41,9 @@ const Welcome = () => {
           </TouchableOpacity>
         </View>
 
-        <View className="items-center">
+        <View className="px-16">
           <TouchableOpacity
-            className="border-sky-1000 bg-sky-1000 rounded-md flex flex-row justify-between items-center w-56 py-4 px-4"
+            className="border-sky-1000 bg-sky-1000 rounded-md w-64 flex flex-row justify-between items-center py-4 px-4"
             onPress={() => navigation.navigate("Register")}
           >
             <Text className="font-bold text-neutral-1200">Je créer mon compte</Text>

@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { SafeAreaView, ScrollView, View } from "react-native";
-import { useAuth } from "../context/AuthContext";
-import { getStatsByUser } from "../services/api";
-import Loader from "../components/Loader";
-import HomeHeader from "../components/home/HomeHeader";
-import FilterTab from "../components/home/FilterTab";
-import StatsCard from "../components/home/StatsCard";
-import EmptyData from "../components/home/EmptyData";
-import Pagination from "../components/home/Pagination";
+import { useAuth } from "../../context/AuthContext";
+import { getStatsByUser } from "../../services/apiService";
+import Loader from "../../components/Loader";
+import HomeHeader from "../../components/home/HomeHeader";
+import FilterTab from "../../components/home/FilterTab";
+import StatsCard from "../../components/home/StatsCard";
+import EmptyData from "../../components/home/EmptyData";
+import Pagination from "../../components/home/Pagination";
 
 const Home = () => {
   const { user, isLoading, setIsLoading, authState } = useAuth();
